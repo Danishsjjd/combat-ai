@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server"
+import { PromptTemplate } from "@langchain/core/prompts"
 import {
-  createParser,
   ParsedEvent,
   ReconnectInterval,
+  createParser,
 } from "eventsource-parser"
-import { PromptTemplate } from "@langchain/core/prompts"
+import { NextRequest, NextResponse } from "next/server"
 
 class OpenAIError extends Error {
   type: string

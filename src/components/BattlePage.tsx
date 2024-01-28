@@ -1,20 +1,13 @@
 "use client"
 
 import useBattle, { initialBattle, type Fight } from "@/hooks/useBattle"
-import { toast } from "sonner"
 import axios from "axios"
+import { Loader } from "lucide-react"
+import Image from "next/image"
 import { confetti } from "party-js"
 import { ComponentPropsWithoutRef, useEffect, useId, useState } from "react"
-import { Loader } from "lucide-react"
-import {
-  array,
-  minLength,
-  nullable,
-  object,
-  optional,
-  safeParse,
-  string,
-} from "valibot"
+import { toast } from "sonner"
+import { array, nullable, object, optional, safeParse, string } from "valibot"
 import {
   Dialog,
   DialogContent,
@@ -23,7 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog"
-import Image from "next/image"
 
 const battleSchema = array(
   object({
