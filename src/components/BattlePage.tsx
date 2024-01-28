@@ -28,7 +28,7 @@ import Image from "next/image"
 const battleSchema = array(
   object({
     opponent1: string(),
-    opponent2: string([minLength(1)]),
+    opponent2: string(),
     response: string(),
     image: optional(string()),
     winner: nullable(string()),
