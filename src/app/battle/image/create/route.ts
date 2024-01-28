@@ -1,3 +1,4 @@
+import { OpenAIError } from "@/utils/error"
 import { PromptTemplate } from "@langchain/core/prompts"
 import axios from "axios"
 import { createWriteStream } from "fs"
@@ -128,16 +129,38 @@ export async function POST(req: NextRequest) {
       size: "512x512",
       prompt: prompt.value,
     }),
-  }).then(
-    async (data) =>
-      (await data.json()) as {
-        created: number
-        data: { url: string }[]
-      }
-  )
+  })
+
+  const decoder = new TextDecoder()
+  const result = await res.json()
+
+  if (res.status !== 200) {
+    if (result.error) {
+      throw new OpenAIError(
+        result.error.message,
+        result.error.type,
+        result.error.param,
+        result.error.code
+      )
+    } else {
+      throw new Error(
+        `OpenAI API returned an error: ${
+          decoder.decode(result?.value) || result.statusText
+        }`
+      )
+    }
+  }
 
   const imageName = `/images/generated/${crypto.randomUUID()}.png`
 
-  await downloadFile(res.data[0].url, path.join(cwd(), `/public${imageName}`))
+  await downloadFile(
+    (
+      result as {
+        created: number
+        data: { url: string }[]
+      }
+    ).data[0].url,
+    path.join(cwd(), `/public${imageName}`)
+  )
   return new Response(imageName)
 }

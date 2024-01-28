@@ -133,7 +133,7 @@ const Battle = ({
         responseTxt += res
       }
     } catch (e) {
-      toast.error("Something went wrong while creating response!")
+      toast.error("Something went wrong while creating response! (check logs)")
     } finally {
       setIsLoading(false)
       pushEmptyBattle()
@@ -150,7 +150,7 @@ const Battle = ({
       })
       setBattle({ image: res.data }, id)
     } catch (e) {
-      toast.error("Something went wrong while creating image!")
+      toast.error("Something went wrong while creating image! (check logs)")
     } finally {
       setImageLoading(false)
     }

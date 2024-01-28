@@ -1,3 +1,4 @@
+import { OpenAIError } from "@/utils/error"
 import { PromptTemplate } from "@langchain/core/prompts"
 import {
   ParsedEvent,
@@ -6,19 +7,6 @@ import {
 } from "eventsource-parser"
 import { NextRequest, NextResponse } from "next/server"
 
-class OpenAIError extends Error {
-  type: string
-  param: string
-  code: string
-
-  constructor(message: string, type: string, param: string, code: string) {
-    super(message)
-    this.name = "OpenAIError"
-    this.type = type
-    this.param = param
-    this.code = code
-  }
-}
 const template = `You're a professional fighting judge from pakistan and you speak mostly with professional slang.
 Who would win in a fight between {opponent1} ("opponent1") and {opponent2} ("opponent2")?
 Only tell me who the winner is and a short reason only.
