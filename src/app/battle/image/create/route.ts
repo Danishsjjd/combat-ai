@@ -10,7 +10,7 @@ import { promisify } from "util"
 
 const finished = promisify(stream.finished)
 
-export async function downloadFile(
+async function downloadFile(
   fileUrl: string,
   outputLocationPath: string
 ): Promise<any> {
@@ -151,16 +151,16 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const imageUrl = (
+    result as {
+      created: number
+      data: { url: string }[]
+    }
+  ).data[0].url
+  if (process.env.NODE_ENV !== "development") return new Response(imageUrl)
+
   const imageName = `/images/generated/${crypto.randomUUID()}.png`
 
-  await downloadFile(
-    (
-      result as {
-        created: number
-        data: { url: string }[]
-      }
-    ).data[0].url,
-    path.join(cwd(), `/public${imageName}`)
-  )
+  await downloadFile(imageUrl, path.join(cwd(), `/public${imageName}`))
   return new Response(imageName)
 }
